@@ -30,12 +30,13 @@ You must not assume ownership of project decisions.
 
 ### 2. Read and Respect Governance
 
-Before making significant framework changes:
+Before making significant framework changes, read the relevant governance and authority files.
 
-Read:
+Relevant references:
 
 - `instructions/CONSTITUTION.md`
 - `instructions/AUTHORITY.md`
+- `instructions/PROJECT_KNOWLEDGE.md`
 
 ### 3. Canonical Documents Have Priority
 
@@ -43,7 +44,7 @@ Accepted canonical documents have higher authority than:
 
 - conversation history;
 - agent recommendations;
-- this handoff summary.
+- temporary summaries.
 
 If a conflict exists between this message and an accepted canonical document:
 
@@ -51,19 +52,19 @@ If a conflict exists between this message and an accepted canonical document:
 2. report it;
 3. escalate if necessary.
 
-Do not silently choose the conversation summary.
+### 4. Language Policy
 
-### 4. Research Is Evidence, Not Decision
+Use the framework-level language convention:
+
+- English by default for AI-facing framework artifacts: `AGENTS.md`, `instructions/`, agent definitions, skill definitions, workflow definitions, framework templates, metadata.
+- Vietnamese by default for downstream project-facing documentation: stories, requirements, analysis, design docs, research notes, decision records, gameplay/world/narrative documentation.
+- Preserve technical English terms when translating would reduce clarity.
+
+### 5. Research Is Evidence, Not Decision
 
 Research findings are evidence, not project requirements.
 
-Flow:
-
-```text
-Research → Findings → Design Proposal → Review → Human Decision → Accepted Specification
-```
-
-### 5. Do Not Silently Create Requirements
+### 6. Do Not Silently Create Requirements
 
 Do not:
 
@@ -73,34 +74,24 @@ Do not:
 
 Report blockers instead.
 
-### 6. Preserve Both WHAT and WHY
+### 7. Preserve Both WHAT and WHY
 
 When decisions matter, preserve both:
 
 - **WHAT** was decided;
 - **WHY** it was decided.
 
-### 7. Use Appropriate Specialist Roles
+### 8. Use Appropriate Specialist Roles
 
 Do not allow one Agent to perform every responsibility.
 
 Route tasks to the appropriate specialist role when available.
 
-### 8. Use Handoff When Responsibility Moves
+### 9. Use Handoff When Responsibility Moves
 
-When work transfers between Agents or roles:
-
-Use the `agent-handoff` Skill.
+When work transfers between Agents or roles, use the `agent-handoff` Skill.
 
 Preserve objective, rationale, accepted decisions, constraints, assumptions, unresolved questions, authority boundaries, and canonical source references.
-
-### 9. Report Conflicts and Blockers
-
-Do not invent missing decisions.
-
-If completing a task requires a decision outside available authority:
-
-Create a blocker or escalation.
 
 ### 10. Prefer Simplicity Over Abstraction
 
@@ -128,6 +119,55 @@ Important project knowledge must eventually exist in canonical repository docume
 This repository and its accepted documents are the long-term source of truth.
 
 Conversation history supports reasoning but is not permanent project memory.
+
+---
+
+## Project Knowledge Architecture
+
+The framework remains project-agnostic.
+
+A downstream game project may conceptually separate:
+
+```text
+project/
+├── docs/
+├── specs/
+├── releases/
+└── src/
+```
+
+Key distinction:
+
+```text
+specs/ = historical development record, rationale, evidence, analysis, traceability
+
+docs/  = consolidated current truth of the released project
+
+src/   = executable implementation
+```
+
+Do not treat these as interchangeable.
+
+---
+
+## Context Efficiency
+
+Agents must follow:
+
+> Read the minimum authoritative context required to perform the current task safely.
+
+and:
+
+> Agents should navigate by references, not by repository-wide reading.
+
+Context expansion should normally require a justified reason:
+
+1. dependency;
+2. authority;
+3. conflict;
+4. missing information.
+
+Do not read the entire repository by default.
 
 ---
 
@@ -160,7 +200,8 @@ Read the relevant specification and accepted decisions first.
 ```text
 instructions/
   ├── CONSTITUTION.md
-  └── AUTHORITY.md
+  ├── AUTHORITY.md
+  └── PROJECT_KNOWLEDGE.md
 
 agents/
   ├── coordination/
@@ -186,53 +227,6 @@ workflows/
 templates/
 examples/
 ```
-
----
-
-## Skill Packages
-
-Every Skill is a self-contained directory containing `SKILL.md`.
-
-Structure:
-
-```text
-skill-name/
-├── SKILL.md
-├── references/     (optional)
-├── templates/      (optional)
-├── scripts/        (optional)
-└── assets/         (optional)
-```
-
-Every `SKILL.md` begins with YAML front matter:
-
-```yaml
----
-name: <skill-name>
-description: >
-  What the skill does AND when to use it.
----
-```
-
-The description must clearly explain both WHAT and WHEN.
-
----
-
-## Agent vs Skill
-
-**Agent = WHO**
-
-Defines roles and responsibilities.
-
-Example: `Development Orchestrator`
-
-**Skill = HOW**
-
-Defines reusable procedures.
-
-Example: `agent-handoff`
-
-Agents may use Skills. Multiple Agents may use the same Skill.
 
 ---
 
@@ -264,18 +258,6 @@ Specialist Agents retain their respective domain responsibilities.
 
 ---
 
-## Conversation History vs Canonical Documents
-
-When a conflict arises:
-
-1. Check if an accepted canonical document exists.
-2. If yes, the canonical document has higher authority.
-3. Report the conflict.
-4. Do not silently choose the conversation summary.
-5. Escalate if necessary.
-
----
-
 ## Getting Started
 
 ### For governance questions
@@ -283,7 +265,8 @@ When a conflict arises:
 Read:
 
 - `instructions/CONSTITUTION.md` — fundamental rules;
-- `instructions/AUTHORITY.md` — authority hierarchy and role definitions.
+- `instructions/AUTHORITY.md` — authority hierarchy and role definitions;
+- `instructions/PROJECT_KNOWLEDGE.md` — project knowledge and context policy.
 
 ### For coordination work
 
@@ -291,17 +274,6 @@ Use:
 
 - `agents/coordination/orchestrator.md` — Orchestrator role definition;
 - `skills/coordination/handoff/SKILL.md` — Handoff Skill for transferring work between Agents.
-
-### For task routing
-
-Classify the task:
-
-- Research → `agents/research/`
-- Design → `agents/design/`
-- Engineering → `agents/engineering/`
-- Quality → `agents/quality/`
-- Learning → `agents/learning/`
-- Coordination → `agents/coordination/`
 
 ---
 
@@ -324,5 +296,6 @@ Extensions and integrations belong in the game project repository, not here.
 ## References
 
 - Full governance: `instructions/CONSTITUTION.md`, `instructions/AUTHORITY.md`
+- Project knowledge and context policy: `instructions/PROJECT_KNOWLEDGE.md`
 - Security policy: `SECURITY.md`
 - Repository overview: `README.md`, `README-vn.md`

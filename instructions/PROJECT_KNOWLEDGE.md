@@ -1,132 +1,57 @@
-# Codex Repository Instructions for gdev-dzu-agents
+# Project Knowledge Architecture
 
-**Status:** Active  
-**Version:** 0.1  
-**Runtime:** OpenAI Codex (primary)
+**Status:** Draft  
+**Version:** 0.1
 
-This repository defines a reusable AI-assisted game development framework.
+This document defines the intended project-knowledge architecture for downstream game projects built with `gdev-dzu-agents`.
 
-It contains:
-
-- governance rules;
-- AI Agent role definitions;
-- reusable Skills;
-- workflows;
-- templates.
-
-It does **NOT** contain requirements for a specific game.
+It does not define requirements for this framework repository itself. The framework remains project-agnostic.
 
 ---
 
-## Core Rules
+## 1. Language Policy
 
-### 1. Human Authority
+### AI-facing / framework-facing artifacts
 
-The Human Project Owner has final authority over the project.
+These should be written in English by default:
 
-You may analyze, research, propose, challenge, and review.
+- `AGENTS.md`
+- files under `instructions/`
+- Agent definitions
+- Skill definitions
+- workflow definitions
+- framework rules
+- framework templates and machine-facing metadata
 
-You must not assume ownership of project decisions.
+These artifacts are primarily consumed repeatedly by AI agents and benefit from consistent technical terminology.
 
-### 2. Read and Respect Governance
+### Project-facing documentation
 
-Before making significant framework changes, read the relevant governance and authority files.
+Documents generated for a specific downstream game project should be written in Vietnamese by default.
 
-Relevant references:
+Examples:
 
-- `instructions/CONSTITUTION.md`
-- `instructions/AUTHORITY.md`
-- `instructions/PROJECT_KNOWLEDGE.md`
+- project documentation
+- Stories
+- Requirements
+- Analysis
+- Design documents
+- Test specifications
+- research reports
+- decision records
+- gameplay documentation
+- world documentation
+- narrative documentation
 
-### 3. Canonical Documents Have Priority
+English technical terms should remain in English when translating them would reduce clarity.
 
-Accepted canonical documents have higher authority than:
-
-- conversation history;
-- agent recommendations;
-- temporary summaries.
-
-If a conflict exists between this message and an accepted canonical document:
-
-1. identify the conflict;
-2. report it;
-3. escalate if necessary.
-
-### 4. Language Policy
-
-Use the framework-level language convention:
-
-- English by default for AI-facing framework artifacts: `AGENTS.md`, `instructions/`, agent definitions, skill definitions, workflow definitions, framework templates, metadata.
-- Vietnamese by default for downstream project-facing documentation: stories, requirements, analysis, design docs, research notes, decision records, gameplay/world/narrative documentation.
-- Preserve technical English terms when translating would reduce clarity.
-
-### 5. Research Is Evidence, Not Decision
-
-Research findings are evidence, not project requirements.
-
-### 6. Do Not Silently Create Requirements
-
-Do not:
-
-- invent missing requirements;
-- expand scope without approval;
-- silently modify accepted specifications, decisions, or governance.
-
-Report blockers instead.
-
-### 7. Preserve Both WHAT and WHY
-
-When decisions matter, preserve both:
-
-- **WHAT** was decided;
-- **WHY** it was decided.
-
-### 8. Use Appropriate Specialist Roles
-
-Do not allow one Agent to perform every responsibility.
-
-Route tasks to the appropriate specialist role when available.
-
-### 9. Use Handoff When Responsibility Moves
-
-When work transfers between Agents or roles, use the `agent-handoff` Skill.
-
-Preserve objective, rationale, accepted decisions, constraints, assumptions, unresolved questions, authority boundaries, and canonical source references.
-
-### 10. Prefer Simplicity Over Abstraction
-
-Favor understandable working solutions.
-
-Avoid unnecessary frameworks, abstraction layers, design patterns, or infrastructure unless they solve a demonstrated problem.
+This policy applies to downstream project artifacts, not necessarily to all source code identifiers.
 
 ---
 
-## Memory Principle
+## 2. Project Structure Concept
 
-```text
-Conversation history is context.
-Accepted documents are memory.
-```
-
-Important project knowledge must eventually exist in canonical repository documents such as:
-
-- accepted specifications;
-- decision records;
-- architecture notes;
-- project vision;
-- game pillars.
-
-This repository and its accepted documents are the long-term source of truth.
-
-Conversation history supports reasoning but is not permanent project memory.
-
----
-
-## Project Knowledge Architecture
-
-The framework remains project-agnostic.
-
-A downstream game project may conceptually separate:
+A downstream project should conceptually separate:
 
 ```text
 project/
@@ -136,23 +61,135 @@ project/
 └── src/
 ```
 
-Key distinction:
+These areas have different responsibilities.
+
+---
+
+## 3. `docs/` — Current Project Truth
+
+`docs/` is the consolidated description of the current released project.
+
+It answers:
+
+> What is the project/game now?
+
+`docs/` should be readable as a coherent description of the current released project without forcing the reader to reconstruct history from Stories.
+
+The important semantic rule is:
 
 ```text
-specs/ = historical development record, rationale, evidence, analysis, traceability
+docs/ != development history
 
-docs/  = consolidated current truth of the released project
+docs/ = consolidated current truth
+```
+
+Do not continuously rewrite `docs/` with every Story. Instead, update `docs/` during release documentation review.
+
+---
+
+## 4. `specs/` — Development Record and Traceability
+
+`specs/` represents the historical and working record of how the project evolves.
+
+Conceptually:
+
+```text
+specs/
+├── vision/
+├── epics/
+├── stories/
+├── decisions/
+└── research/
+```
+
+This is a conceptual downstream-project structure.
+
+The framework repository itself does not create project-specific directories or game-specific requirements.
+
+---
+
+## 5. EPIC Semantics
+
+An EPIC is a bounded initiative at a particular point in the project history.
+
+It is not a permanent category or bucket.
+
+Every new EPIC should eventually have an Initial Story that captures the original context and allows analysis before decomposition into additional Stories.
+
+If analysis reveals another sufficiently large initiative, propose a NEW EPIC instead of silently expanding the current EPIC.
+
+---
+
+## 6. Story Artifact Model
+
+A Story is the primary traceable unit of development work.
+
+Conceptually, a Story may contain:
+
+```text
+<STORY-ID>/
+├── STORY.md
+├── REQUIREMENTS.md
+├── ANALYSIS.md
+├── DESIGN.md
+├── TASKS.md
+└── TESTS.md
+```
+
+The exact schema may evolve, but the purpose is to preserve traceability from requirement to implementation.
+
+---
+
+## 7. Releases
+
+The conceptual role of `releases/` should exist.
+
+A Release groups completed and accepted work into a deliverable project version.
+
+Do not force a one-to-one relationship between Release and EPIC.
+
+A Release may include work from multiple EPICs.
+
+---
+
+## 8. Three Different Forms of Project Truth
+
+The project should distinguish between:
+
+```text
+specs/ = historical development record,
+  rationale,
+  evidence,
+  requirements,
+  analysis,
+  design,
+  traceability
+
+docs/  = consolidated description
+  of the current released project
 
 src/   = executable implementation
 ```
 
-Do not treat these as interchangeable.
+Another useful summary:
+
+```text
+specs/ = WHY / HOW WE GOT HERE
+
+docs/  = WHAT THE PROJECT IS NOW
+
+src/   = WHAT THE SOFTWARE DOES
+```
+
+These sources must not be treated as interchangeable.
 
 ---
 
-## Context Efficiency
+## 9. Context Efficiency / Token Policy
 
-Agents must follow:
+AI agents must not read the entire repository by default.
+
+The framework principle is:
 
 > Read the minimum authoritative context required to perform the current task safely.
 
@@ -160,160 +197,120 @@ and:
 
 > Agents should navigate by references, not by repository-wide reading.
 
-Context expansion should normally require a justified reason:
+Context expansion should normally require at least one justified reason:
 
 1. dependency;
 2. authority;
 3. conflict;
 4. missing information.
 
-Do not read the entire repository by default.
-
 ---
 
-## Progressive Disclosure
+## 10. Progressive Context Disclosure
 
-Do NOT read every file before every task.
-
-Instead, read conditionally:
-
-### When changing governance
-
-Read relevant files under `instructions/`.
-
-### When acting in a defined role
-
-Read the corresponding role definition under `agents/`.
-
-### When a task matches an available Skill
-
-Use the relevant Skill under `skills/`.
-
-### When implementing from a project specification
-
-Read the relevant specification and accepted decisions first.
-
----
-
-## Framework Structure
+A conceptual context-loading model:
 
 ```text
-instructions/
-  ├── CONSTITUTION.md
-  ├── AUTHORITY.md
-  └── PROJECT_KNOWLEDGE.md
+Layer 0
+AGENTS.md
 
-agents/
-  ├── coordination/
-  │   └── orchestrator.md
-  ├── design/
-  ├── engineering/
-  ├── learning/
-  ├── quality/
-  └── research/
+    ↓
 
-skills/
-  ├── coordination/
-  │   └── handoff/
-  │       └── SKILL.md
-  ├── development/
-  ├── engineering/
-  ├── game-design/
-  ├── learning/
-  ├── quality/
-  └── research/
+Layer 1
+Relevant Agent definition
 
-workflows/
-templates/
-examples/
+    ↓
+
+Layer 2
+Relevant Skill
+
+    ↓
+
+Layer 3
+Current Story / Work Item
+
+    ↓
+
+Layer 4
+Explicitly referenced
+Decision / Research / Docs / Dependencies
+
+    ↓
+
+Layer 5
+Relevant source code
 ```
 
----
+This is conceptual guidance, not a rigid implementation algorithm.
 
-## Agent vs Skill
-
-**Agent = WHO**
-
-Defines roles and responsibilities.
-
-Example: `Development Orchestrator`
-
-**Skill = HOW**
-
-Defines reusable procedures.
-
-Example: `agent-handoff`
-
-Agents may use Skills. Multiple Agents may use the same Skill.
+Agents working on one Story should not automatically read every Story, EPIC, or research file in the project.
 
 ---
 
-## Development Orchestrator
+## 11. Reference-Driven Context
 
-Location: `agents/coordination/orchestrator.md`
+Future Story/work-item formats should support explicit references such as:
 
-The Orchestrator is a coordination role, not a domain authority.
+```yaml
+epic: <EPIC-ID>
 
-It has **Workflow Authority** over:
+depends_on:
+  - <STORY-ID>
 
-- task routing;
-- task classification;
-- Handoff preparation;
-- context management;
-- result consolidation;
-- blocker identification;
-- escalation.
+decisions:
+  - <DECISION-ID>
 
-It does NOT have **Domain Authority** over:
+research:
+  - <RESEARCH-ID>
 
-- game direction;
-- game design;
-- technical architecture;
-- implementation;
-- review.
+affected_docs:
+  - <document-reference>
+```
 
-Specialist Agents retain their respective domain responsibilities.
+The purpose is to allow agents to follow explicit relationships instead of scanning the repository.
 
 ---
 
-## Getting Started
+## 12. Handoff and Context Efficiency
 
-### For governance questions
+The Handoff Skill must follow this principle:
 
-Read:
+> Preserve necessary context, not maximum context.
 
-- `instructions/CONSTITUTION.md` — fundamental rules;
-- `instructions/AUTHORITY.md` — authority hierarchy and role definitions;
-- `instructions/PROJECT_KNOWLEDGE.md` — project knowledge and context policy.
+A Handoff should preserve:
 
-### For coordination work
+- objective;
+- current task;
+- relevant context;
+- accepted decisions;
+- rationale;
+- constraints;
+- assumptions;
+- unresolved questions;
+- progress;
+- expected output;
+- authority boundaries;
+- canonical references.
 
-Use:
-
-- `agents/coordination/orchestrator.md` — Orchestrator role definition;
-- `skills/coordination/handoff/SKILL.md` — Handoff Skill for transferring work between Agents.
-
----
-
-## Important
-
-This repository is a **framework**, not a game project.
-
-Do not introduce:
-
-- game-specific story, lore, or characters;
-- engine-specific code or configuration;
-- project-specific economy, maps, or mechanics;
-- runtime implementation (Python, JavaScript, MCP, etc.);
-- persistent project state storage.
-
-Extensions and integrations belong in the game project repository, not here.
+It should prefer referencing authoritative artifacts instead of copying their full contents.
 
 ---
 
-## References
+## 13. Summary
 
-- Full governance: `instructions/CONSTITUTION.md`, `instructions/AUTHORITY.md`
-- Project knowledge and context policy: `instructions/PROJECT_KNOWLEDGE.md`
-- Security policy: `SECURITY.md`
-- Repository overview: `README.md`, `README-vn.md`
+The central principles are:
+
+```text
+Framework is reusable.
+Project knowledge is downstream.
+
+specs/ = historical record and traceability
+
+docs/  = current released truth
+
+src/   = executable implementation
+```
+
+Agents should operate with minimal necessary context, follow explicit references, and resolve conflicts using authority before silently choosing a source.
+
+This preserves accuracy, scalability, and traceability without turning the framework into project-specific logic.

@@ -24,159 +24,33 @@ The framework should help developers:
 - reduce AI hallucination and uncontrolled scope expansion;
 - reuse the same development workflow across multiple games.
 
-## Core Concepts
+---
 
-The framework separates four different concepts.
+## Project Knowledge Architecture
 
-### Instructions
-
-Instructions define global rules governing AI behavior.
-
-They answer:
-
-> **What rules must every AI agent follow?**
-
-Examples:
-
-- authority hierarchy;
-- specification compliance;
-- research integrity;
-- learning rules;
-- change control.
-
-Location:
+The framework remains project-agnostic. A downstream game project may use the following conceptual structure:
 
 ```text
-instructions/
+project/
+├── docs/
+├── specs/
+├── releases/
+└── src/
 ```
 
-### Agents
-
-Agents define roles and responsibilities.
-
-They answer:
-
-> **Who is performing the task?**
-
-Examples:
-
-- Game Director
-- Game Designer
-- Technical Architect
-- Developer
-- Reviewer
-- Learning Coach
-- Game Research Analyst
-- Game Discovery Scout
-- Domain Researcher
-- External Design Council
-
-Location:
+The intended distinction is:
 
 ```text
-agents/
+specs/ = historical development record, rationale, evidence, design, and traceability
+
+docs/  = consolidated current truth of the released project
+
+src/   = executable implementation
 ```
 
-Agents should orchestrate work and use appropriate skills.
+This separation avoids mixing historical development notes with the current project state.
 
-Agents should not duplicate detailed procedures already defined by skills.
-
-### Development Orchestrator
-
-The framework supports a coordination role responsible for routing and continuity across the development workflow.
-
-The Development Orchestrator is not a domain authority that replaces Game Director, Game Designer, Technical Architect, or Reviewer.
-
-Instead, it provides:
-
-- task interpretation;
-- routing to the most relevant specialist Agent;
-- working context management;
-- handoff preparation;
-- result consolidation;
-- conflict identification;
-- escalation when a decision requires higher authority.
-
-The Orchestrator's role is to improve coordination, not to override specialist domain decisions.
-
-Location:
-
-```text
-agents/coordination/
-```
-
-### Skills
-
-Skills define reusable procedures.
-
-They answer:
-
-> **How should a particular task be performed?**
-
-Examples:
-
-- analyze a reference game;
-- discover similar games;
-- design a gameplay system;
-- design a save system;
-- review an implementation;
-- create a learning exercise.
-
-Location:
-
-```text
-skills/
-```
-
-Skills must remain project-agnostic.
-
-A skill must not contain requirements belonging to a specific game.
-
-### Handoff Protocol
-
-The framework includes a Handoff Protocol to pass work between Agents without losing intent, constraints, or authority boundaries.
-
-The Handoff Protocol preserves:
-
-- objective;
-- context;
-- rationale;
-- accepted decisions;
-- relevant sources;
-- unresolved questions;
-- assumptions;
-- expected output;
-- what may and may not be changed.
-
-Location:
-
-```text
-skills/coordination/handoff.md
-```
-
-### Project Specifications
-
-Project specifications describe a particular game.
-
-They answer:
-
-> **What are we building?**
-
-Examples:
-
-```text
-player movement
-career system
-economy
-world
-NPC relationships
-property system
-quests
-```
-
-Project specifications **do not belong in this repository**.
-
-They belong to the repository of the game using this framework.
+A project should not treat `docs/`, `specs/`, and `src/` as interchangeable documents.
 
 ---
 
@@ -188,200 +62,66 @@ gdev-dzu-agents/
 ├── instructions/
 │   ├── CONSTITUTION.md
 │   ├── AUTHORITY.md
-│   └── MODES.md
+│   └── PROJECT_KNOWLEDGE.md
 │
 ├── agents/
 │   ├── coordination/
-│   ├── research/
+│   │   └── orchestrator.md
 │   ├── design/
 │   ├── engineering/
+│   ├── learning/
 │   ├── quality/
-│   └── learning/
+│   └── research/
 │
 ├── skills/
 │   ├── coordination/
-│   ├── research/
-│   ├── game-design/
-│   ├── engineering/
+│   │   └── handoff/
+│   │       └── SKILL.md
 │   ├── development/
+│   ├── engineering/
+│   ├── game-design/
+│   ├── learning/
 │   ├── quality/
-│   └── learning/
+│   └── research/
 │
 ├── workflows/
 ├── templates/
-├── docs/
-└── examples/
-```
-
-The structure may evolve as the framework matures.
-
----
-
-## Planned Agent Organization
-
-### Research
-
-- Game Research Analyst
-- Game Discovery Scout
-- Domain Researcher
-- External Design Council
-
-### Design
-
-- Game Director
-- Game Designer
-
-### Engineering
-
-- Technical Architect
-- Developer
-
-### Quality
-
-- Reviewer
-
-### Learning
-
-- Learning Coach
-
-Agent definitions will be added incrementally.
-
----
-
-## Authority Principle
-
-AI assists development but does not own the project.
-
-The human project owner remains the final authority.
-
-The expected authority hierarchy is:
-
-```text
-Human Project Owner
-        ↓
-Project Vision
-        ↓
-Game Pillars
-        ↓
-Accepted Decisions
-        ↓
-Accepted Specifications
-        ↓
-Architecture
-        ↓
-Current Task
-        ↓
-Agent Recommendation
-```
-
-Lower levels must not silently override higher levels.
-
-Conflicts must be reported rather than automatically resolved.
-
-The workflow model also includes a coordination layer:
-
-```text
-Human Project Owner
-        |
-        v
-Development Orchestrator
-        |
-        +--------------------------+
-        |                          |
-        v                          v
-Specialist Agents            Specialist Agents
-```
-
-This coordination layer provides workflow and routing authority, not superior domain authority.
-
-See:
-
-```text
-instructions/CONSTITUTION.md
-instructions/AUTHORITY.md
+├── examples/
+├── README.md
+├── README-vn.md
+├── SECURITY.md
+└── AGENTS.md
 ```
 
 ---
 
-## Conversation History Is Context; Accepted Documents Are Memory
+## Context Efficiency
 
-The framework distinguishes between short-term reasoning context and durable project memory.
+Agents should follow:
 
-```text
-Conversation history is context.
-Accepted documents are memory.
-```
+> Read the minimum authoritative context required to perform the current task safely.
 
-Conversation history may help reasoning, but important decisions must eventually be preserved in canonical project documents such as specifications, decision records, architecture notes, and accepted principles.
+and:
 
-This prevents the project from depending only on transient AI conversations.
+> Navigate by references instead of reading the repository broadly.
 
----
+Context expansion should only happen when there is a justified reason, such as:
 
-## Research Is Not Design
+- dependency;
+- authority;
+- conflict; or
+- missing information.
 
-Research findings are evidence, not project requirements.
-
-```text
-Research
-    ↓
-Findings
-    ↓
-Design Proposal
-    ↓
-Review / Discussion
-    ↓
-Human Decision
-    ↓
-Accepted Specification
-```
-
-An interesting mechanic discovered during research must not automatically become part of a game.
+This keeps the framework scalable and avoids mixing current project truth with stale historical findings.
 
 ---
 
-## AI Development Philosophy
+## Security
 
-The framework follows several principles:
-
-**Research before assumption.**
-
-**Design before implementation.**
-
-**Specification before production code.**
-
-**Understanding before automation when learning.**
-
-**Review independently from implementation.**
-
-**Prefer simple working systems before unnecessary abstraction.**
-
-**Record why important decisions were made.**
-
-**Preserve intent in handoffs.**
-
-**Treat accepted documents as source-of-truth memory.**
-
----
-
-## Status
-
-🚧 **Early Development**
-
-Current focus:
-
-1. framework governance;
-2. authority model;
-3. operating modes;
-4. agent contracts;
-5. reusable research skills;
-6. orchestration and handoff foundations.
-
-No production-ready agent system is available yet.
+See `SECURITY.md` for repository security constraints.
 
 ---
 
 ## License
 
 License information is available in `LICENSE`.
-
