@@ -49,7 +49,23 @@ This policy applies to downstream project artifacts, not necessarily to all sour
 
 ---
 
-## 2. Project Structure Concept
+## 2. External Reference Use
+
+External repositories and development frameworks may be used as architectural
+evidence and inspiration.
+
+They are not sources of truth for this framework.
+
+Use external patterns only when they solve a demonstrated problem in
+`gdev-dzu-agents`. Do not copy another repository's workflow, directory
+structure, Git strategy, Agent hierarchy, planning format, lifecycle, or
+terminology unless it is independently justified by this framework's own goals.
+
+The architecture remains owned by this framework.
+
+---
+
+## 3. Project Structure Concept
 
 A downstream project should conceptually separate:
 
@@ -65,7 +81,7 @@ These areas have different responsibilities.
 
 ---
 
-## 3. `docs/` — Current Project Truth
+## 4. `docs/` — Current Project Truth
 
 `docs/` is the consolidated description of the current released project.
 
@@ -87,7 +103,7 @@ Do not continuously rewrite `docs/` with every Story. Instead, update `docs/` du
 
 ---
 
-## 4. `specs/` — Development Record and Traceability
+## 5. `specs/` — Development Record and Traceability
 
 `specs/` represents the historical and working record of how the project evolves.
 
@@ -113,13 +129,83 @@ separate authority hierarchy.
 
 ---
 
-## 5. EPIC Semantics
+## 6. Work Item Foundation
+
+The framework uses a minimal Work Item model for downstream project traceability
+and scope control. It is not intended to become a Jira clone.
+
+Conceptually:
+
+```text
+Project
+|
++-- Vision
+|
++-- EPIC
+|   |
+|   +-- Story
+|       |
+|       +-- Task
+|
++-- Decision
+|
++-- Research
+```
+
+The core Work Item hierarchy is:
+
+```text
+EPIC
+  >
+Initial Story
+  >
+Story
+  >
+Task
+```
+
+Decision and Research artifacts are not required children of a Story. They are
+orthogonal project knowledge artifacts.
+
+A Decision or Research artifact may apply to:
+
+- Project;
+- EPIC;
+- Story;
+- architecture or design question;
+- technical question;
+- another explicitly referenced scope.
+
+References should be preferred over copying full Decision or Research content
+inside Stories. This supports context efficiency and keeps authoritative
+artifacts in their proper locations.
+
+---
+
+## 7. EPIC Semantics
 
 An EPIC is a bounded initiative at a particular point in the project history.
 
 It is not a permanent category or bucket.
 
-Every new EPIC should eventually have an Initial Story that captures the original context and allows analysis before decomposition into additional Stories.
+An EPIC should:
+
+- represent a meaningful project goal or initiative;
+- establish high-level context;
+- establish known scope without inventing unknown scope;
+- group related Stories;
+- preserve traceability between the initiative and resulting work.
+
+An EPIC is not:
+
+- a permanent category;
+- a feature bucket that remains open forever;
+- a substitute for detailed requirements;
+- a container where AI should automatically generate every imaginable feature.
+
+Every new EPIC should eventually have an Initial Story that captures the
+original context and allows analysis before decomposition into additional
+Stories.
 
 If analysis reveals another sufficiently large initiative, propose a NEW EPIC instead of silently expanding the current EPIC.
 
@@ -129,9 +215,46 @@ buckets reopened indefinitely for loosely related work.
 
 ---
 
-## 6. Story Artifact Model
+## 8. Initial Story Semantics
+
+Initial Story is not a separate Work Item type.
+
+It is a normal Story with a special role within a newly created EPIC.
+
+Its purpose is to safely explore, analyze, clarify, and establish the first
+bounded piece of work before the framework decomposes an EPIC into additional
+Stories.
+
+Conceptually:
+
+```text
+Idea / Initiative
+  >
+EPIC
+  >
+Initial Story
+  >
+Analysis / Research / clarification
+  >
+Proposed decomposition
+  >
+Human Project Owner review
+  >
+Additional Stories
+```
+
+The Initial Story should help discover scope rather than assume scope. This
+protects the framework from prematurely inventing requirements or decomposing an
+initiative into unapproved features.
+
+---
+
+## 9. Story Semantics
 
 A Story is the primary traceable unit of development work.
+
+A Story represents one bounded change that can be understood, implemented,
+reviewed, and verified independently enough to maintain useful traceability.
 
 Story IDs should be globally sequential within a downstream project. They should
 not reset each year, even if Story files are organized into year-based folders.
@@ -145,7 +268,31 @@ A downstream project may use a project-specific Story prefix, conceptually:
 This describes the accepted direction for identity semantics. It does not yet
 define the full Work Item Standard or a rigid file schema.
 
-Conceptually, Story-bound work may later produce or reference artifacts such as:
+A Story may eventually reference or contain concepts such as:
+
+- Story ID;
+- parent EPIC;
+- goal;
+- scope;
+- out-of-scope boundaries;
+- requirements;
+- acceptance criteria;
+- dependencies;
+- relevant Decisions;
+- relevant Research;
+- artifacts;
+- implementation;
+- tests;
+- review evidence;
+- verification evidence;
+- Git traceability.
+
+Do not finalize the Story schema, create Story templates, or finalize filenames
+yet. These belong to future Work Item Standard refinement and Story lifecycle
+design.
+
+Conceptually, Story-bound work may later produce or reference artifact types
+such as:
 
 - requirements;
 - analysis;
@@ -161,7 +308,117 @@ not finalized. They belong to the future Work Item Standard.
 
 ---
 
-## 7. Concept Separation
+## 10. Story Sizing Principle
+
+A Story should be small enough that:
+
+- its goal is understandable;
+- its scope is bounded;
+- its acceptance can be evaluated;
+- implementation impact can be reasoned about;
+- review and verification remain meaningful.
+
+Avoid arbitrary sizing rules such as maximum number of files, maximum number of
+Tasks, story points, or fixed development hours.
+
+A Story should be split when it contains independently meaningful changes that:
+
+- can be accepted separately;
+- have significantly different risks;
+- require different major design decisions;
+- have different dependencies;
+- make the Story too broad to reason about safely.
+
+Do not force decomposition simply because a Story is technically large. Prefer
+semantic boundaries over arbitrary size limits.
+
+---
+
+## 11. Task Semantics
+
+A Task is implementation or planning decomposition within a Story.
+
+Conceptually:
+
+```text
+Story
+|
++-- Task 01
++-- Task 02
++-- Task 03
++-- Task 04
+```
+
+A Task helps describe:
+
+- concrete work;
+- execution order;
+- dependencies;
+- progress;
+- optional ownership boundaries.
+
+A Task does not automatically receive the same governance weight as a Story.
+By default, a Task does not require:
+
+- its own EPIC relationship;
+- its own full lifecycle;
+- its own branch;
+- its own pull request;
+- its own complete requirements document;
+- its own full artifact set.
+
+The Story remains the primary traceability and acceptance boundary.
+
+Tasks inherit authority from the Story and its accepted upstream artifacts. A
+Task must not silently change:
+
+- Story requirements;
+- acceptance criteria;
+- accepted design;
+- project decisions;
+- Story scope.
+
+If executing a Task reveals a contradiction or missing requirement, report a
+blocker or unresolved question and return to the Story or appropriate authority.
+Implementation Tasks must not become hidden requirement generators.
+
+Optional future Task ownership metadata may help prevent conflicts during
+parallel execution:
+
+```yaml
+task: <TASK-ID>
+
+depends_on:
+  - <TASK-ID>
+
+owns:
+  - <resource-reference>
+```
+
+Ownership may refer to files, modules, components, or other implementation
+resources. It should remain optional. This document does not require ownership
+metadata for every Task, implement parallel Agent execution, or create runtime
+locking.
+
+Task identity syntax is not finalized. A possible future direction is:
+
+```text
+<STORY-ID>-T<SEQUENCE>
+```
+
+For example:
+
+```text
+SGL-0023-T01
+SGL-0023-T02
+```
+
+Do not treat this as an accepted Task ID standard. EPIC identity format also
+remains deferred.
+
+---
+
+## 12. Concept Separation
 
 The framework must keep these concepts separate:
 
@@ -201,9 +458,12 @@ force Research into Mode, Phase, Agent, or Skill solely for symmetry.
 
 ---
 
-## 8. Story-Bound Execution and Traceability
+## 13. Story-Bound Execution and Traceability
 
 Once work enters Story-bound execution, it should be traceable to a Story ID.
+
+Story is the primary execution, traceability, review, and acceptance boundary.
+Tasks decompose execution inside that boundary.
 
 Conceptually, future Story-bound work should support traceability between:
 
@@ -222,9 +482,12 @@ traceability. Git behavior will be specified separately.
 Phase transition is not the same thing as a Git commit. A phase may produce
 multiple commits.
 
+This does not mean every Story must always produce every possible artifact.
+Artifact requirements may depend on Story complexity and future lifecycle rules.
+
 ---
 
-## 9. Artifact-Driven Progression
+## 14. Artifact-Driven Progression
 
 Execution phases should eventually produce explicit outputs. After acceptance,
 an earlier phase output may become an authoritative input to later work.
@@ -245,7 +508,7 @@ states, artifact schemas, filenames, gates, or transitions.
 
 ---
 
-## 10. Releases
+## 15. Releases
 
 The conceptual role of `releases/` should exist.
 
@@ -267,7 +530,7 @@ created by this document.
 
 ---
 
-## 11. Future Audit and Context Responsibilities
+## 16. Future Audit and Context Responsibilities
 
 The framework may later define a Project Auditor role to review consistency
 between accepted decisions, specifications, release documentation, and current
@@ -280,7 +543,7 @@ perform the current task safely.
 
 ---
 
-## 12. Three Different Forms of Project Truth
+## 17. Three Different Forms of Project Truth
 
 The project should distinguish between:
 
@@ -313,7 +576,7 @@ These sources must not be treated as interchangeable.
 
 ---
 
-## 13. Context Efficiency / Token Policy
+## 18. Context Efficiency / Token Policy
 
 AI agents must not read the entire repository by default.
 
@@ -334,7 +597,7 @@ Context expansion should normally require at least one justified reason:
 
 ---
 
-## 14. Progressive Context Disclosure
+## 19. Progressive Context Disclosure
 
 A conceptual context-loading model:
 
@@ -371,11 +634,11 @@ Relevant source code
 
 This is conceptual guidance, not a rigid implementation algorithm.
 
-Agents working on one Story should not automatically read every Story, EPIC, or research file in the project.
+Agents working on one Story should not automatically read every Story, EPIC, Decision, or Research file in the project.
 
 ---
 
-## 15. Reference-Driven Context
+## 20. Reference-Driven Context
 
 Future Story/work-item formats should support explicit references such as:
 
@@ -397,9 +660,28 @@ affected_docs:
 
 The purpose is to allow agents to follow explicit relationships instead of scanning the repository.
 
+The Work Item model should support progressive context disclosure. An Agent
+working on one Story should normally be able to navigate:
+
+```text
+Current Story
+  >
+Parent EPIC
+  >
+Explicit dependencies
+  >
+Referenced Decisions
+  >
+Referenced Research
+  >
+Relevant source code
+```
+
+Work Item relationships should reduce context usage rather than increase it.
+
 ---
 
-## 16. Handoff and Context Efficiency
+## 21. Handoff and Context Efficiency
 
 The Handoff Skill must follow this principle:
 
@@ -424,7 +706,7 @@ It should prefer referencing authoritative artifacts instead of copying their fu
 
 ---
 
-## 17. Summary
+## 22. Summary
 
 The central principles are:
 
