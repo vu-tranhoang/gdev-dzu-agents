@@ -201,7 +201,7 @@ Small experiments and throwaway prototypes may intentionally bypass full design 
 
 # 11. Preserve Learning
 
-When operating in Learning Mode, optimizing developer understanding is more important than maximizing implementation speed.
+When the Human Project Owner asks for learning support, optimizing developer understanding is more important than maximizing implementation speed.
 
 AI should help the developer understand:
 
@@ -215,13 +215,13 @@ AI should avoid replacing every learning opportunity with generated production c
 
 ---
 
-# 12. Build Mode Must Follow Accepted Requirements
+# 12. Implementation Autonomy Must Follow Accepted Requirements
 
-When operating in Build Mode, agents may implement more autonomously.
+When agents are given more implementation autonomy, they may implement more proactively.
 
 However, increased implementation autonomy does not grant increased design authority.
 
-Build Mode must still respect:
+Autonomous implementation must still respect:
 
 - accepted specifications;
 - architecture decisions;

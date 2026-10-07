@@ -145,23 +145,107 @@ A downstream project may use a project-specific Story prefix, conceptually:
 This describes the accepted direction for identity semantics. It does not yet
 define the full Work Item Standard or a rigid file schema.
 
-Conceptually, a Story may contain:
+Conceptually, Story-bound work may later produce or reference artifacts such as:
 
-```text
-<STORY-ID>/
-├── STORY.md
-├── REQUIREMENTS.md
-├── ANALYSIS.md
-├── DESIGN.md
-├── TASKS.md
-└── TESTS.md
-```
+- requirements;
+- analysis;
+- design;
+- tasks or implementation planning;
+- source changes;
+- tests;
+- review evidence;
+- verification evidence.
 
-The exact schema may evolve, but the purpose is to preserve traceability from requirement to implementation.
+The exact filenames, schemas, lifecycle states, gates, and transition rules are
+not finalized. They belong to the future Work Item Standard.
 
 ---
 
-## 7. Releases
+## 7. Concept Separation
+
+The framework must keep these concepts separate:
+
+```text
+Agent = WHO performs a responsibility
+Skill = HOW a reusable capability is performed
+Story / Work Item = WHAT is being changed
+Phase = WHERE the work currently is in its execution lifecycle
+Mode = HOW MUCH autonomy or interaction style the AI currently has
+```
+
+These concepts must not be collapsed into one another.
+
+Learning is not a Story lifecycle phase. A Story should not transition into a
+learning state merely because the Human Project Owner wants to understand a
+concept, implementation, or trade-off. Learning is orthogonal to lifecycle
+progression.
+
+Learning support belongs conceptually under reusable Skills because it changes
+how an Agent assists the Human Project Owner. The exact Skill contract is not
+designed yet, and no Learning Skill is created by this document.
+
+Mode is separate from Phase. Phase describes execution lifecycle position, while
+Mode should eventually describe interaction and autonomy characteristics such as
+AI initiative, Human involvement, explanation depth, and approval expectations.
+Mode must not change authority, source of truth, accepted requirements, accepted
+scope, or governance. Exact Mode names and contracts are not accepted yet.
+
+Design, implementation, review, and verification are better understood as
+possible execution lifecycle concerns than as finalized Modes. Exact lifecycle
+states, gates, transitions, and artifact requirements remain deferred to the
+future Work Item Standard.
+
+Research remains orthogonal for now. It may occur before a Story exists, for an
+EPIC, for a Story, or during analysis/design when evidence is missing. Do not
+force Research into Mode, Phase, Agent, or Skill solely for symmetry.
+
+---
+
+## 8. Story-Bound Execution and Traceability
+
+Once work enters Story-bound execution, it should be traceable to a Story ID.
+
+Conceptually, future Story-bound work should support traceability between:
+
+```text
+Story ID
+  <-> Git branch
+  <-> commits
+  <-> pull request
+  <-> implementation / review / verification evidence
+```
+
+Do not treat this as a finalized Git branching strategy. The framework should
+prefer the simplest branching strategy that provides sufficient Story
+traceability. Git behavior will be specified separately.
+
+Phase transition is not the same thing as a Git commit. A phase may produce
+multiple commits.
+
+---
+
+## 9. Artifact-Driven Progression
+
+Execution phases should eventually produce explicit outputs. After acceptance,
+an earlier phase output may become an authoritative input to later work.
+
+Conceptually:
+
+```text
+analysis produces analysis output
+design produces accepted design output
+planning produces implementation plan or tasks
+implementation produces code, tests, and implementation evidence
+review produces review findings or result
+verification produces acceptance evidence or result
+```
+
+This is conceptual architecture guidance only. It does not finalize lifecycle
+states, artifact schemas, filenames, gates, or transitions.
+
+---
+
+## 10. Releases
 
 The conceptual role of `releases/` should exist.
 
@@ -183,7 +267,7 @@ created by this document.
 
 ---
 
-## 8. Future Audit and Context Responsibilities
+## 11. Future Audit and Context Responsibilities
 
 The framework may later define a Project Auditor role to review consistency
 between accepted decisions, specifications, release documentation, and current
@@ -196,7 +280,7 @@ perform the current task safely.
 
 ---
 
-## 9. Three Different Forms of Project Truth
+## 12. Three Different Forms of Project Truth
 
 The project should distinguish between:
 
@@ -229,7 +313,7 @@ These sources must not be treated as interchangeable.
 
 ---
 
-## 10. Context Efficiency / Token Policy
+## 13. Context Efficiency / Token Policy
 
 AI agents must not read the entire repository by default.
 
@@ -250,7 +334,7 @@ Context expansion should normally require at least one justified reason:
 
 ---
 
-## 11. Progressive Context Disclosure
+## 14. Progressive Context Disclosure
 
 A conceptual context-loading model:
 
@@ -291,7 +375,7 @@ Agents working on one Story should not automatically read every Story, EPIC, or 
 
 ---
 
-## 12. Reference-Driven Context
+## 15. Reference-Driven Context
 
 Future Story/work-item formats should support explicit references such as:
 
@@ -315,7 +399,7 @@ The purpose is to allow agents to follow explicit relationships instead of scann
 
 ---
 
-## 13. Handoff and Context Efficiency
+## 16. Handoff and Context Efficiency
 
 The Handoff Skill must follow this principle:
 
@@ -340,7 +424,7 @@ It should prefer referencing authoritative artifacts instead of copying their fu
 
 ---
 
-## 14. Summary
+## 17. Summary
 
 The central principles are:
 
