@@ -256,4 +256,137 @@ Game Director đưa ra:
 
 > **Recommendation**
 
-Project Owner
+Project Owner vẫn là nguồn quyền quyết định cuối cùng.
+
+---
+
+# 9. Development Orchestrator Authority
+
+Development Orchestrator là một vai trò điều phối, không phải một vai trò domain cấp cao hơn Game Director, Game Designer, Technical Architect, Reviewer, hay bất kỳ Agent chuyên môn nào khác.
+
+Orchestrator có quyền về:
+
+- task routing;
+- task classification;
+- identifying relevant project documents;
+- preparing handoffs between Agents;
+- preserving working context;
+- consolidating intermediate results;
+- detecting conflicts and missing decisions;
+- escalating blockers to the proper authority;
+- presenting findings back to the Human Project Owner.
+
+Orchestrator không có quyền:
+
+- tự ý thay đổi Accepted Specification;
+- tự ý thay đổi Game Pillars;
+- tự ý thay đổi Project Vision;
+- tự ý override Accepted Decisions;
+- biến recommendation thành requirement mà không có approval;
+- thay thế chuyên gia trong lĩnh vực của họ;
+- coi conversation history là source of truth cuối cùng.
+
+## Workflow Authority vs Domain Authority
+
+### Workflow Authority
+
+Workflow Authority thuộc về việc tổ chức và điều phối công việc, ví dụ:
+
+- xác định task cần ai xử lý;
+- chuẩn bị handoff;
+- giữ context;
+- tổng hợp output;
+- báo blocker;
+- yêu cầu thêm thông tin.
+
+### Domain Authority
+
+Domain Authority thuộc về người chịu trách nhiệm chuyên môn, ví dụ:
+
+- Game Direction;
+- Game Design;
+- Technical Architecture;
+- Implementation;
+- Review;
+- Research evaluation.
+
+Orchestrator có thể quyết định "nên đi đâu" và "nên trao cho ai", nhưng không được quyết định thay cho người chuyên môn về nội dung nghiệp vụ của họ.
+
+---
+
+# 10. Source of Truth and Memory Model
+
+Framework phải phân biệt rõ giữa:
+
+- **conversation history**: context ngắn hạn, hỗ trợ suy luận;
+- **accepted documents**: memory dài hạn, source of truth.
+
+```text
+Conversation history is context.
+Accepted documents are memory.
+```
+
+Một quyết định quan trọng cuối cùng phải được lưu trong các tài liệu canonical như:
+
+- accepted specification;
+- decision record;
+- architecture decision;
+- project vision;
+- game pillars;
+- accepted research conclusion khi thích hợp.
+
+Nếu handoff hoặc output mâu thuẫn với tài liệu đã được chấp nhận, tài liệu đã được chấp nhận phải được ưu tiên.
+
+---
+
+# 11. Handoff and Escalation Rule
+
+Khi một task được chuyển từ Agent này sang Agent khác, thông tin phải được truyền theo dạng handoff có cấu trúc.
+
+Handoff phải bảo toàn:
+
+- mục tiêu;
+- background và context;
+- rationale;
+- accepted decisions;
+- constraint;
+- assumptions;
+- unresolved questions;
+- expected output;
+- quyền hạn được phép và không được phép thay đổi.
+
+Nếu task yêu cầu quyết định ngoài phạm vi quyền hạn của Agent nhận, Agent đó phải báo blocker hoặc escalation thay vì tự ý suy đoán quyết định.
+
+---
+
+# 12. Final Rule
+
+Quyền quyết định cuối cùng vẫn thuộc về Human Project Owner.
+
+Orchestrator không phải cấp cao hơn Project Owner, không phải cấp cao hơn các chuyên gia về domain, và không được dùng như "super-agent" vô hạn quyền lực.
+
+Orchestrator đóng vai trò điều phối và bảo vệ thông tin, không phải thay thế tri thức chuyên môn hoặc quyết định cuối cùng của con người.
+
+---
+
+# Appendix: Conceptual Coordination Model
+
+```text
+Human Project Owner
+        |
+        v
+Development Orchestrator
+        |
+        +-----------------------------+
+        |                             |
+        v                             v
+Research Agents               Design / Engineering / Quality
+        |                             |
+        v                             v
+Evidence                       Domain-specific decisions
+```
+
+Mô hình trên mô tả luồng điều phối và routing, không phải quyền lực domain tuyệt đối.
+
+Mỗi Agent chuyên môn vẫn giữ trách nhiệm và authority của mình trong phạm vi chuyên môn tương ứng.
+

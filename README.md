@@ -81,6 +81,30 @@ Agents should orchestrate work and use appropriate skills.
 
 Agents should not duplicate detailed procedures already defined by skills.
 
+### Development Orchestrator
+
+The framework supports a coordination role responsible for routing and continuity across the development workflow.
+
+The Development Orchestrator is not a domain authority that replaces Game Director, Game Designer, Technical Architect, or Reviewer.
+
+Instead, it provides:
+
+- task interpretation;
+- routing to the most relevant specialist Agent;
+- working context management;
+- handoff preparation;
+- result consolidation;
+- conflict identification;
+- escalation when a decision requires higher authority.
+
+The Orchestrator's role is to improve coordination, not to override specialist domain decisions.
+
+Location:
+
+```text
+agents/coordination/
+```
+
 ### Skills
 
 Skills define reusable procedures.
@@ -107,6 +131,28 @@ skills/
 Skills must remain project-agnostic.
 
 A skill must not contain requirements belonging to a specific game.
+
+### Handoff Protocol
+
+The framework includes a Handoff Protocol to pass work between Agents without losing intent, constraints, or authority boundaries.
+
+The Handoff Protocol preserves:
+
+- objective;
+- context;
+- rationale;
+- accepted decisions;
+- relevant sources;
+- unresolved questions;
+- assumptions;
+- expected output;
+- what may and may not be changed.
+
+Location:
+
+```text
+skills/coordination/handoff.md
+```
 
 ### Project Specifications
 
@@ -145,6 +191,7 @@ gdev-dzu-agents/
 │   └── MODES.md
 │
 ├── agents/
+│   ├── coordination/
 │   ├── research/
 │   ├── design/
 │   ├── engineering/
@@ -152,6 +199,7 @@ gdev-dzu-agents/
 │   └── learning/
 │
 ├── skills/
+│   ├── coordination/
 │   ├── research/
 │   ├── game-design/
 │   ├── engineering/
@@ -161,7 +209,8 @@ gdev-dzu-agents/
 │
 ├── workflows/
 ├── templates/
-└── docs/
+├── docs/
+└── examples/
 ```
 
 The structure may evolve as the framework matures.
@@ -229,6 +278,22 @@ Lower levels must not silently override higher levels.
 
 Conflicts must be reported rather than automatically resolved.
 
+The workflow model also includes a coordination layer:
+
+```text
+Human Project Owner
+        |
+        v
+Development Orchestrator
+        |
+        +--------------------------+
+        |                          |
+        v                          v
+Specialist Agents            Specialist Agents
+```
+
+This coordination layer provides workflow and routing authority, not superior domain authority.
+
 See:
 
 ```text
@@ -238,21 +303,36 @@ instructions/AUTHORITY.md
 
 ---
 
+## Conversation History Is Context; Accepted Documents Are Memory
+
+The framework distinguishes between short-term reasoning context and durable project memory.
+
+```text
+Conversation history is context.
+Accepted documents are memory.
+```
+
+Conversation history may help reasoning, but important decisions must eventually be preserved in canonical project documents such as specifications, decision records, architecture notes, and accepted principles.
+
+This prevents the project from depending only on transient AI conversations.
+
+---
+
 ## Research Is Not Design
 
 Research findings are evidence, not project requirements.
 
 ```text
 Research
-   ↓
+    ↓
 Findings
-   ↓
+    ↓
 Design Proposal
-   ↓
+    ↓
 Review / Discussion
-   ↓
+    ↓
 Human Decision
-   ↓
+    ↓
 Accepted Specification
 ```
 
@@ -278,6 +358,10 @@ The framework follows several principles:
 
 **Record why important decisions were made.**
 
+**Preserve intent in handoffs.**
+
+**Treat accepted documents as source-of-truth memory.**
+
 ---
 
 ## Status
@@ -290,7 +374,8 @@ Current focus:
 2. authority model;
 3. operating modes;
 4. agent contracts;
-5. reusable research skills.
+5. reusable research skills;
+6. orchestration and handoff foundations.
 
 No production-ready agent system is available yet.
 
@@ -299,3 +384,4 @@ No production-ready agent system is available yet.
 ## License
 
 License information is available in `LICENSE`.
+
