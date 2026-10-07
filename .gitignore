@@ -1,0 +1,34 @@
+# Secrets
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+
+# IDE
+.idea/
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temporary
+*.tmp
+*.log
+.cache/
+temp/
+tmp/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Node
+node_modules/
+
+# Local AI / agent state
+.local/
+.workspace/
