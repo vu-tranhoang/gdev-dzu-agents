@@ -152,16 +152,17 @@ Project
 +-- Research
 ```
 
-The core Work Item hierarchy is:
+Within an EPIC, the Initial Story and later Stories are siblings:
 
 ```text
 EPIC
-  >
-Initial Story
-  >
-Story
-  >
-Task
+|
++-- Initial Story
++-- Story
++-- Story
++-- Story
+    |
+    +-- Task
 ```
 
 Decision and Research artifacts are not required children of a Story. They are
@@ -221,9 +222,9 @@ Initial Story is not a separate Work Item type.
 
 It is a normal Story with a special role within a newly created EPIC.
 
-Its purpose is to safely explore, analyze, clarify, and establish the first
-bounded piece of work before the framework decomposes an EPIC into additional
-Stories.
+It is normally the first Story used to safely explore, clarify, and establish
+the first bounded piece of work before the framework decomposes an EPIC into
+additional sibling Stories.
 
 Conceptually:
 
@@ -246,6 +247,9 @@ Additional Stories
 The Initial Story should help discover scope rather than assume scope. This
 protects the framework from prematurely inventing requirements or decomposing an
 initiative into unapproved features.
+
+Additional Stories created from the Initial Story are siblings under the same
+EPIC. They are not children of the Initial Story.
 
 ---
 
@@ -441,6 +445,10 @@ Learning support belongs conceptually under reusable Skills because it changes
 how an Agent assists the Human Project Owner. The exact Skill contract is not
 designed yet, and no Learning Skill is created by this document.
 
+Learning support is not currently an accepted specialist Agent contract. A
+dedicated education-oriented Agent may be introduced later only if justified
+through the future Agent Contract design.
+
 Mode is separate from Phase. Phase describes execution lifecycle position, while
 Mode should eventually describe interaction and autonomy characteristics such as
 AI initiative, Human involvement, explanation depth, and approval expectations.
@@ -487,12 +495,77 @@ Artifact requirements may depend on Story complexity and future lifecycle rules.
 
 ---
 
-## 14. Artifact-Driven Progression
+## 14. Session-Based Execution
+
+The framework is intended to support solo developers, very small teams, and
+Human-directed AI-assisted development.
+
+Different responsibilities may be performed in separate AI sessions. The
+framework must not require those sessions to share conversation history.
+
+Conceptually:
+
+```text
+Human Project Owner
+  >
+AI Session A
+Agent / Role A
+  >
+Output Artifact
+  >
+Human reviews / refines
+  >
+AI Session B
+Agent / Role B
+  >
+Next Output Artifact
+```
+
+Accepted project artifacts provide continuity between sessions.
+
+This reinforces the memory principle:
+
+```text
+Conversation history is context.
+Accepted documents are memory.
+```
+
+Each session should be able to reconstruct the minimum necessary working context
+from canonical repository artifacts.
+
+---
+
+## 15. Artifact-Driven Progression
 
 Execution phases should eventually produce explicit outputs. After acceptance,
 an earlier phase output may become an authoritative input to later work.
 
+Artifacts are the primary durable interface between development sessions.
+
+An upstream session produces an artifact. A downstream session consumes that
+artifact as authoritative input within its accepted scope.
+
 Conceptually:
+
+```text
+Phase A
+  >
+Artifact A
+  >
+Phase B
+  >
+Artifact B
+```
+
+Artifacts reduce dependency on conversation history, hidden Agent memory,
+long-running sessions, and autonomous orchestration.
+
+Artifacts should preserve the information necessary for downstream work without
+copying unnecessary context. References to canonical Decisions, Research,
+requirements, and dependencies should be preferred over duplicating their full
+contents.
+
+Conceptual phase output examples:
 
 ```text
 analysis produces analysis output
@@ -508,7 +581,155 @@ states, artifact schemas, filenames, gates, or transitions.
 
 ---
 
-## 15. Releases
+## 16. Human-Directed Progression
+
+Do not introduce a formal Gate subsystem at this stage.
+
+For the intended solo and small-team workflow, the Human Project Owner controls
+progression.
+
+Conceptually:
+
+```text
+Current Phase
+  >
+Agent produces output
+  >
+Human reviews
+  >
+refine current output OR proceed to next Phase
+```
+
+If the Human Project Owner is not satisfied, refine the current output and
+remain in the current Phase. Do not create a new Story status merely to
+represent revision.
+
+If the Human Project Owner intentionally starts the next Phase using the
+upstream output, that action conceptually means the upstream output is accepted
+enough to continue development.
+
+Do not require approval machinery such as gate records, approval databases, or
+approval metadata. Formal approval metadata may be reconsidered later only if a
+larger-team use case demonstrates a real need.
+
+---
+
+## 17. Blockers and Story Status
+
+Do not create a Story Status state machine in this framework foundation.
+
+The document statuses defined by the Authority Model, such as Draft, Review,
+Accepted, Deprecated, and Superseded, describe document authority/status. They
+must not be automatically reinterpreted as Story statuses.
+
+If work cannot safely continue because information or authority is missing,
+represent the problem conceptually as a blocker, unresolved question, conflict,
+or required decision.
+
+After resolution, work continues in the appropriate current Phase. A blocker is
+a condition affecting execution, not necessarily the identity or lifecycle
+status of the Story.
+
+---
+
+## 18. Phase Direction
+
+Story describes what is changing.
+
+Phase describes where that Story currently is in execution.
+
+Do not finalize the complete Phase lifecycle yet.
+
+The architecture is moving toward a lightweight future Phase Contract based on:
+
+```text
+Phase
+|-- Purpose
+|-- Responsible Agent / Role
+|-- Required Inputs
+|-- Expected Outputs
+|-- Authority Boundaries
++-- Completion Meaning
+```
+
+This is the intended next design problem. This document does not create the
+final Phase Contract, finalize exact Phase names, or define transitions, gates,
+entry criteria, exit criteria, or required artifacts.
+
+Future Phase design should prefer:
+
+```text
+Required Inputs
+  >
+Responsible Agent / Role
+  >
+Work
+  >
+Expected Output Artifact
+  >
+Human review / refinement
+  >
+Next Phase
+```
+
+over a complex workflow state machine.
+
+---
+
+## 19. Runtime Independence
+
+A framework Agent is a role and responsibility contract. It is not necessarily
+the same thing as a runtime-specific AI Agent implementation.
+
+Conceptually:
+
+```text
+Framework Agent
+  =
+WHO is responsible
++ authority boundaries
++ expected responsibility
+```
+
+A framework Agent may eventually be executed through a dedicated AI chat/session,
+a Codex session, a Codex subagent, another AI coding tool, or a future
+orchestration runtime.
+
+The core framework must remain runtime-independent:
+
+```text
+Framework core:
+  Story / Work Item
+  Phase
+  Agent Contract
+  Skills
+  Inputs
+  Outputs / Artifacts
+
+Runtime adapter:
+  Codex
+  Claude
+  Cursor
+  Agents API
+  Future runtime
+```
+
+The framework defines development semantics. Runtime adapters define how those
+semantics are exposed to a particular AI tool.
+
+OpenAI Codex is currently the primary runtime used while developing and
+dogfooding this framework. Codex-specific invocation mechanics must not define
+the core framework architecture. Future Codex integration belongs to a future
+adapter or integration layer.
+
+Do not move framework `skills/` merely to match runtime-specific discovery
+conventions. Skills remain reusable framework capabilities. Future runtime
+adapters may expose or map framework Skills into runtime-native mechanisms, but
+that mapping is not designed here.
+
+---
+
+## 20. Releases
 
 The conceptual role of `releases/` should exist.
 
@@ -530,7 +751,7 @@ created by this document.
 
 ---
 
-## 16. Future Audit and Context Responsibilities
+## 21. Future Audit and Context Responsibilities
 
 The framework may later define a Project Auditor role to review consistency
 between accepted decisions, specifications, release documentation, and current
@@ -543,7 +764,7 @@ perform the current task safely.
 
 ---
 
-## 17. Three Different Forms of Project Truth
+## 22. Three Different Forms of Project Truth
 
 The project should distinguish between:
 
@@ -576,7 +797,7 @@ These sources must not be treated as interchangeable.
 
 ---
 
-## 18. Context Efficiency / Token Policy
+## 23. Context Efficiency / Token Policy
 
 AI agents must not read the entire repository by default.
 
@@ -597,7 +818,7 @@ Context expansion should normally require at least one justified reason:
 
 ---
 
-## 19. Progressive Context Disclosure
+## 24. Progressive Context Disclosure
 
 A conceptual context-loading model:
 
@@ -608,7 +829,7 @@ AGENTS.md
     ↓
 
 Layer 1
-Relevant Agent definition
+Relevant Agent Contract
 
     ↓
 
@@ -636,9 +857,12 @@ This is conceptual guidance, not a rigid implementation algorithm.
 
 Agents working on one Story should not automatically read every Story, EPIC, Decision, or Research file in the project.
 
+Separate sessions should not require full history from previous sessions. Read
+only what is necessary for the current responsibility.
+
 ---
 
-## 20. Reference-Driven Context
+## 25. Reference-Driven Context
 
 Future Story/work-item formats should support explicit references such as:
 
@@ -681,7 +905,7 @@ Work Item relationships should reduce context usage rather than increase it.
 
 ---
 
-## 21. Handoff and Context Efficiency
+## 26. Handoff and Context Efficiency
 
 The Handoff Skill must follow this principle:
 
@@ -704,9 +928,32 @@ A Handoff should preserve:
 
 It should prefer referencing authoritative artifacts instead of copying their full contents.
 
+Artifacts provide durable project continuity. Handoff provides focused
+responsibility-transfer context when additional information is needed.
+
+```text
+Artifact = durable project knowledge / output
+Handoff = focused responsibility-transfer context
+```
+
+Separate AI sessions do not automatically require a large Handoff if the
+necessary context is already recoverable from canonical artifacts.
+
 ---
 
-## 22. Summary
+## 27. Architecture Minimalism
+
+Before adding any new mechanism, ask:
+
+> What problem does this solve that the current framework cannot solve?
+
+Prefer simple, explicit, traceable, Human-directed, artifact-driven, and
+runtime-independent architecture over autonomous, state-heavy, workflow-heavy,
+or runtime-coupled mechanisms unless future requirements demonstrate the need.
+
+---
+
+## 28. Summary
 
 The central principles are:
 

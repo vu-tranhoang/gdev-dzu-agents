@@ -250,7 +250,10 @@ Example roles and their domain authority:
 - **Developer** → Implementation details, code organization, engineering practices.
 - **Reviewer** → Code quality, architecture compliance, edge cases.
 - **Research Agent** → Evidence gathering, analysis, findings.
-- **Learning Coach** → Education, understanding, concept clarity.
+
+Learning support is currently treated as a reusable Skill capability, not as an
+accepted specialist Agent contract. A dedicated education-oriented Agent may be
+introduced later only through the future Agent Contract design.
 
 The Orchestrator does NOT override their domain decisions merely because it coordinates the workflow.
 
