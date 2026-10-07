@@ -1,23 +1,6 @@
 # Workflows
 
-This directory defines coordination patterns for AI-assisted game development.
+This directory is reserved for future workflow definitions.
 
-## Suggested workflow files
-
-```text
-workflows/
-├── README.md
-├── research-to-design.md
-├── design-to-implementation.md
-├── implementation-to-review.md
-├── handoff-workflow.md
-└── release-checklist.md
-```
-
-## Core principles
-
-- preserve authority boundaries;
-- keep handoff context narrow but complete;
-- treat research as evidence, not decisions;
-- request decisions when blocked;
-- prefer explicit documentation over hidden assumptions.
+Workflow architecture has not been formally designed or accepted yet. Do not
+treat this directory as defining canonical development flow.

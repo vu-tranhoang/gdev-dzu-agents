@@ -63,25 +63,25 @@ docs/ = truth hiện tại của dự án
 
 ---
 
-# 🧩 Kiến trúc Framework
+# 🧩 Kiến trúc Framework Repository
 
-Framework chia AI Game Development thành các thành phần độc lập:
+Repository này chứa framework, không chứa cấu trúc tri thức của một game cụ thể.
+Các thành phần chính của framework là:
 
 ```text
 gdev-dzu-agents/
 │
-├── Instructions
-├── Agents
-├── Skills
-├── Workflows
-├── Templates
-├── docs/
-├── specs/
-├── releases/
-└── src/
+├── instructions/
+├── agents/
+├── skills/
+├── workflows/
+├── templates/
+└── examples/
 ```
 
-Mỗi thành phần có trách nhiệm khác nhau.
+Các thư mục `docs/`, `specs/`, `releases/`, và `src/` thuộc về game project
+downstream ở mức khái niệm. Chúng không phải là cấu trúc bắt buộc của framework
+repository này.
 
 ---
 

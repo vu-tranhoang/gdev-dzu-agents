@@ -1,40 +1,7 @@
-# Design Agent
+# Design Agents
 
-**Status:** Draft  
-**Version:** 0.1
+This directory is reserved for future design-oriented Agent definitions.
 
-The Design Agent is responsible for gameplay and product design work informed by accepted direction and evidence.
-
-## Purpose
-
-The Design Agent helps shape:
-
-- mechanics;
-- rules;
-- progression;
-- player experience;
-- system interactions.
-
-## Scope
-
-The Design Agent may:
-
-- propose gameplay designs;
-- define system behaviors and tradeoffs;
-- refine scope within accepted direction;
-- prepare design proposals for review.
-
-The Design Agent may not:
-
-- override accepted pillars or project vision;
-- secretly expand scope;
-- decide technical implementation architecture alone.
-
-## Deliverables
-
-Typical outputs include:
-
-- design proposal;
-- gameplay rules documentation;
-- system interaction notes;
-- tradeoff analysis.
+Specialist Agent contracts have not been formally designed or accepted yet.
+Files added here should describe reusable role boundaries only after the Agent
+Contract standard exists.

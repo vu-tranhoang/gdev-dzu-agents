@@ -1,26 +1,6 @@
-# Game Design Skill
+# Game Design Skills
 
-**Status:** Active  
-**Version:** 0.1
+This directory is reserved for future reusable game-design Skills.
 
-This skill helps turn accepted direction into gameplay design proposals.
-
-## Workflow
-
-1. clarify accepted direction;
-2. identify player experience goals;
-3. define mechanics and interactions;
-4. consider edge cases and failures;
-5. document tradeoffs and constraints;
-6. propose design for review.
-
-## Output
-
-Design output should show:
-
-- objective;
-- rules or behavior;
-- progression and feedback loops;
-- edge cases;
-- risks and assumptions;
-- open decisions.
+Reusable Skills in this category have not been formally designed or accepted
+yet. Do not treat this directory as defining an active canonical workflow.

@@ -1,23 +1,6 @@
 # Decision Templates
 
-This directory stores accepted decisions and rationale.
+This directory is reserved for future project-agnostic decision templates.
 
-## Recommended files
-
-```text
-templates/decisions/
-├── decision-record-template.md
-├── architecture-decision-template.md
-└── tradeoff-template.md
-```
-
-## Required fields
-
-- title;
-- status;
-- context;
-- decision;
-- rationale;
-- consequences;
-- alternatives considered;
-- owner or approver.
+Decision record schema and artifact identification standards have not been
+formally designed or accepted yet.

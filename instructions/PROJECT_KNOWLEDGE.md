@@ -106,6 +106,11 @@ This is a conceptual downstream-project structure.
 
 The framework repository itself does not create project-specific directories or game-specific requirements.
 
+Historical project knowledge may be organized by year for readability and
+scalability. This applies conceptually to historical EPICs, Stories, Decisions,
+and Research records. Year-based organization is a filing strategy, not a
+separate authority hierarchy.
+
 ---
 
 ## 5. EPIC Semantics
@@ -118,11 +123,27 @@ Every new EPIC should eventually have an Initial Story that captures the origina
 
 If analysis reveals another sufficiently large initiative, propose a NEW EPIC instead of silently expanding the current EPIC.
 
+Later related initiatives should normally create a new EPIC and reference the
+historical EPICs that provide context. Old EPICs should not become permanent
+buckets reopened indefinitely for loosely related work.
+
 ---
 
 ## 6. Story Artifact Model
 
 A Story is the primary traceable unit of development work.
+
+Story IDs should be globally sequential within a downstream project. They should
+not reset each year, even if Story files are organized into year-based folders.
+
+A downstream project may use a project-specific Story prefix, conceptually:
+
+```text
+<PROJECT_PREFIX>-<SEQUENTIAL_ID>
+```
+
+This describes the accepted direction for identity semantics. It does not yet
+define the full Work Item Standard or a rigid file schema.
 
 Conceptually, a Story may contain:
 
@@ -150,9 +171,32 @@ Do not force a one-to-one relationship between Release and EPIC.
 
 A Release may include work from multiple EPICs.
 
+Story completion does not directly rewrite `docs/`.
+
+Release documentation consolidation is the point where affected `docs/` should
+be updated to reflect accepted completed work. This keeps `docs/` focused on
+current released truth rather than development history.
+
+The framework may later define a Release Documentation Curator role to handle
+this consolidation responsibility. That role is conceptual only and is not
+created by this document.
+
 ---
 
-## 8. Three Different Forms of Project Truth
+## 8. Future Audit and Context Responsibilities
+
+The framework may later define a Project Auditor role to review consistency
+between accepted decisions, specifications, release documentation, and current
+project truth. That role is conceptual only and is not created by this document.
+
+Context scope should eventually become an explicit responsibility in Agent
+contracts. Until those contracts are designed, agents should continue to follow
+the general principle of reading the minimum authoritative context required to
+perform the current task safely.
+
+---
+
+## 9. Three Different Forms of Project Truth
 
 The project should distinguish between:
 
@@ -185,7 +229,7 @@ These sources must not be treated as interchangeable.
 
 ---
 
-## 9. Context Efficiency / Token Policy
+## 10. Context Efficiency / Token Policy
 
 AI agents must not read the entire repository by default.
 
@@ -206,7 +250,7 @@ Context expansion should normally require at least one justified reason:
 
 ---
 
-## 10. Progressive Context Disclosure
+## 11. Progressive Context Disclosure
 
 A conceptual context-loading model:
 
@@ -247,7 +291,7 @@ Agents working on one Story should not automatically read every Story, EPIC, or 
 
 ---
 
-## 11. Reference-Driven Context
+## 12. Reference-Driven Context
 
 Future Story/work-item formats should support explicit references such as:
 
@@ -271,7 +315,7 @@ The purpose is to allow agents to follow explicit relationships instead of scann
 
 ---
 
-## 12. Handoff and Context Efficiency
+## 13. Handoff and Context Efficiency
 
 The Handoff Skill must follow this principle:
 
@@ -296,7 +340,7 @@ It should prefer referencing authoritative artifacts instead of copying their fu
 
 ---
 
-## 13. Summary
+## 14. Summary
 
 The central principles are:
 

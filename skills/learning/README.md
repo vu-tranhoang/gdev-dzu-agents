@@ -1,23 +1,6 @@
-# Learning Skill
+# Learning Skills
 
-**Status:** Active  
-**Version:** 0.1
+This directory is reserved for future reusable learning Skills.
 
-This skill helps capture learning from work and improve future development quality.
-
-## Workflow
-
-1. reflect on the task and result;
-2. identify key choices and tradeoffs;
-3. summarize what worked and what did not;
-4. capture reusable lessons;
-5. store the knowledge in a reusable form.
-
-## Output
-
-Learning output should preserve:
-
-- context;
-- decision and rationale;
-- lessons learned;
-- future guidance.
+Reusable Skills in this category have not been formally designed or accepted
+yet. Do not treat this directory as defining an active canonical workflow.

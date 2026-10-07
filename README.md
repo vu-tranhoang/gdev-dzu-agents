@@ -119,9 +119,3 @@ This keeps the framework scalable and avoids mixing current project truth with s
 ## Security
 
 See `SECURITY.md` for repository security constraints.
-
----
-
-## License
-
-License information is available in `LICENSE`.

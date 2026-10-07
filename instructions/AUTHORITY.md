@@ -3,77 +3,80 @@
 **Status:** Draft  
 **Version:** 0.1
 
-Tài liệu này định nghĩa quyền hạn, trách nhiệm và thứ tự ưu tiên giữa Human Project Owner, project documents và các AI Agent trong `gdev-dzu-agents`.
+This document defines authority, responsibility, and priority relationships
+between the Human Project Owner, project documents, and AI Agents in
+`gdev-dzu-agents`.
 
-Mục tiêu là ngăn AI:
+Its purpose is to prevent AI systems from:
 
-- tự ý thay đổi project direction;
-- biến recommendation thành requirement;
-- sửa specification ngoài phạm vi;
-- mở rộng scope không được yêu cầu;
-- che giấu conflict bằng cách tự đưa ra quyết định.
+- changing project direction without approval;
+- turning recommendations into requirements;
+- editing specifications outside their authority;
+- expanding scope without request;
+- hiding conflicts by making unauthorized decisions.
 
 ---
 
 # 1. Final Authority
 
-Quyền quyết định cuối cùng luôn thuộc về:
+Final decision-making authority always belongs to:
 
 > **Human Project Owner**
 
-Project Owner có quyền:
+The Project Owner may:
 
-- chấp nhận hoặc từ chối proposal;
-- thay đổi Game Vision;
-- thay đổi Game Pillars;
-- chấp nhận hoặc hủy Decision;
-- chấp nhận hoặc thay đổi Specification;
-- override recommendation của Agent;
-- yêu cầu nghiên cứu thêm;
-- thay đổi scope;
-- quyết định release.
+- accept or reject proposals;
+- change Game Vision;
+- change Game Pillars;
+- accept or revoke Decisions;
+- accept or change Specifications;
+- override Agent recommendations;
+- request additional research;
+- change scope;
+- decide releases.
 
-Agent có quyền phản biện nhưng không có quyền thay thế Project Owner.
+Agents may challenge and reason about decisions, but they do not replace the
+Project Owner.
 
 ---
 
 # 2. Authority Hierarchy
 
-Thứ tự authority mặc định:
+Default authority order:
 
 ```text
 Human Project Owner
-        ↓
+        >
 Project Vision
-        ↓
+        >
 Game Pillars
-        ↓
+        >
 Accepted Decisions
-        ↓
+        >
 Accepted Specifications
-        ↓
+        >
 Accepted Architecture
-        ↓
+        >
 Current Task
-        ↓
+        >
 Agent Recommendation
 ```
 
-Tầng thấp hơn không được tự ý override tầng cao hơn.
+Lower-authority sources must not silently override higher-authority sources.
 
 ---
 
 # 3. Conflict Rule
 
-Khi một Agent phát hiện conflict giữa hai nguồn requirement, Agent phải:
+When an Agent detects a conflict between requirement sources, it must:
 
-1. xác định conflict;
-2. xác định các nguồn liên quan;
-3. xác định authority của từng nguồn;
-4. không tự ý thay đổi nguồn có authority cao hơn;
-5. báo conflict nếu không thể giải quyết an toàn.
+1. identify the conflict;
+2. identify the relevant sources;
+3. identify the authority level of each source;
+4. avoid changing the higher-authority source without approval;
+5. report the conflict if it cannot be resolved safely.
 
-Ví dụ:
+Example:
 
 ```text
 Game Pillar:
@@ -83,15 +86,15 @@ Task:
 Make combat mandatory to unlock Area B.
 ```
 
-Agent không được tự implement requirement mới.
+The Agent must not silently implement the new requirement.
 
-Agent phải báo:
+It should report:
 
 ```text
 CONFLICT DETECTED
 
 Higher authority:
-Game Pillar — Combat should remain optional.
+Game Pillar - Combat should remain optional.
 
 Conflicting requirement:
 Current task requires mandatory combat.
@@ -103,9 +106,9 @@ Decision required.
 
 # 4. Document Status
 
-Không phải mọi document đều có authority giống nhau.
+Documents do not all carry the same authority.
 
-Document có thể có trạng thái:
+A document may have one of these statuses:
 
 ```text
 DRAFT
@@ -117,62 +120,62 @@ SUPERSEDED
 
 ## DRAFT
 
-Đang được xây dựng.
+Being developed.
 
-Có thể thay đổi tự do.
+May change freely.
 
-Không phải source of truth.
+Not a source of truth.
 
 ## REVIEW
 
-Đang chờ review hoặc quyết định.
+Awaiting review or decision.
 
-Không nên được dùng làm requirement production nếu chưa được cho phép.
+Should not be used as a production requirement unless explicitly allowed.
 
 ## ACCEPTED
 
-Đã được Project Owner chấp nhận.
+Approved by the Project Owner.
 
-Có authority trong phạm vi của document.
+Carries authority within the document's stated scope.
 
 ## DEPRECATED
 
-Không nên dùng cho development mới.
+Should not be used for new development.
 
-Được giữ lại vì historical context.
+Kept for historical context.
 
 ## SUPERSEDED
 
-Đã được thay thế bởi document hoặc decision mới hơn.
+Replaced by a newer document or decision.
 
 ---
 
 # 5. Proposal Is Not Decision
 
-Agent có thể tạo proposal.
+An Agent may create a proposal.
 
-Ví dụ:
+Example:
 
 ```text
 PROPOSAL:
 Replace inheritance-based interaction with component-based interaction.
 ```
 
-Proposal không có authority cho đến khi được chấp nhận.
+A proposal has no authority until accepted.
 
 Flow:
 
 ```text
 Idea
- ↓
+  >
 Proposal
- ↓
+  >
 Discussion
- ↓
+  >
 Review
- ↓
+  >
 Owner Decision
- ↓
+  >
 Accepted / Rejected / Deferred
 ```
 
@@ -180,30 +183,29 @@ Accepted / Rejected / Deferred
 
 # 6. Research Authority
 
-Research Agent có quyền:
+Research roles may:
 
-- thu thập thông tin;
-- so sánh;
-- phân tích;
-- tìm pattern;
-- tìm community feedback;
-- tìm risk;
-- tìm opportunity;
-- đề xuất hướng nghiên cứu tiếp.
+- gather information;
+- compare references;
+- analyze patterns;
+- identify community feedback;
+- identify risks;
+- identify opportunities;
+- suggest further research directions.
 
-Research Agent không có quyền:
+Research roles may not:
 
-- thay đổi Specification;
-- thay đổi Game Pillar;
-- thay đổi Architecture;
-- tự thêm feature;
-- biến reference game thành requirement.
+- change Specifications;
+- change Game Pillars;
+- change Architecture;
+- add features independently;
+- turn a reference game into a requirement.
 
-Research output là:
+Research output is:
 
 > **Evidence**
 
-không phải:
+not:
 
 > **Decision**
 
@@ -211,29 +213,29 @@ không phải:
 
 # 7. Game Designer Authority
 
-Game Designer có quyền:
+Game Designer roles may:
 
-- phân tích mechanic;
-- thiết kế gameplay system;
-- đề xuất rule;
-- đề xuất progression;
-- đề xuất balance;
-- phát hiện vấn đề về player experience;
-- tạo Design Proposal;
-- đề xuất thay đổi Specification.
+- analyze mechanics;
+- design gameplay systems;
+- propose rules;
+- propose progression;
+- propose balance;
+- identify player-experience problems;
+- create Design Proposals;
+- propose Specification changes.
 
-Game Designer không được tự ý:
+Game Designer roles must not independently:
 
-- thay đổi Accepted Game Pillar;
-- thay đổi Accepted Specification;
-- quyết định technical architecture;
-- implement production code ngoài nhiệm vụ được giao.
+- change Accepted Game Pillars;
+- change Accepted Specifications;
+- decide technical architecture;
+- implement production code outside assigned work.
 
 ---
 
 # 8. Game Director Authority
 
-Game Director chịu trách nhiệm bảo vệ:
+Game Director roles are responsible for protecting:
 
 - Project Vision;
 - Game Pillars;
@@ -241,67 +243,69 @@ Game Director chịu trách nhiệm bảo vệ:
 - consistency;
 - product direction.
 
-Game Director có thể:
+Game Director roles may:
 
-- đánh giá proposal;
-- phát hiện feature creep;
-- đề xuất Accept / Reject / Defer;
-- yêu cầu research;
-- yêu cầu redesign;
-- xác định conflict với Vision.
+- evaluate proposals;
+- identify feature creep;
+- recommend Accept / Reject / Defer;
+- request research;
+- request redesign;
+- identify conflicts with Vision.
 
-Game Director không thay thế Human Project Owner.
+Game Director roles do not replace the Human Project Owner.
 
-Game Director đưa ra:
+Game Director output is:
 
 > **Recommendation**
 
-Project Owner vẫn là nguồn quyền quyết định cuối cùng.
+The Project Owner remains the final decision-making authority.
 
 ---
 
 # 9. Development Orchestrator Authority
 
-Development Orchestrator là một vai trò điều phối, không phải một vai trò domain cấp cao hơn Game Director, Game Designer, Technical Architect, Reviewer, hay bất kỳ Agent chuyên môn nào khác.
+The Development Orchestrator is a coordination role. It is not a higher domain
+authority than Game Director, Game Designer, Technical Architect, Reviewer, or
+any other specialist Agent.
 
-Orchestrator có quyền về:
+The Orchestrator has authority over:
 
 - task routing;
 - task classification;
 - identifying relevant project documents;
-- preparing handoffs between Agents;
+- preparing Handoffs between Agents;
 - preserving working context;
 - consolidating intermediate results;
 - detecting conflicts and missing decisions;
 - escalating blockers to the proper authority;
-- presenting findings back to the Human Project Owner.
+- presenting findings to the Human Project Owner.
 
-Orchestrator không có quyền:
+The Orchestrator does not have authority to:
 
-- tự ý thay đổi Accepted Specification;
-- tự ý thay đổi Game Pillars;
-- tự ý thay đổi Project Vision;
-- tự ý override Accepted Decisions;
-- biến recommendation thành requirement mà không có approval;
-- thay thế chuyên gia trong lĩnh vực của họ;
-- coi conversation history là source of truth cuối cùng.
+- change Accepted Specifications independently;
+- change Game Pillars independently;
+- change Project Vision independently;
+- override Accepted Decisions independently;
+- turn recommendations into requirements without approval;
+- replace specialists inside their domains;
+- treat conversation history as the final source of truth.
 
 ## Workflow Authority vs Domain Authority
 
 ### Workflow Authority
 
-Workflow Authority thuộc về việc tổ chức và điều phối công việc, ví dụ:
+Workflow Authority concerns organization and coordination, such as:
 
-- xác định task cần ai xử lý;
-- chuẩn bị handoff;
-- giữ context;
-- tổng hợp output;
-- báo blocker;
-- yêu cầu thêm thông tin.
+- identifying who should handle a task;
+- preparing Handoffs;
+- preserving context;
+- consolidating output;
+- reporting blockers;
+- requesting additional information.
 
 ### Domain Authority
 
-Domain Authority thuộc về người chịu trách nhiệm chuyên môn, ví dụ:
+Domain Authority belongs to the responsible specialist domain, such as:
 
 - Game Direction;
 - Game Design;
@@ -310,62 +314,68 @@ Domain Authority thuộc về người chịu trách nhiệm chuyên môn, ví d
 - Review;
 - Research evaluation.
 
-Orchestrator có thể quyết định "nên đi đâu" và "nên trao cho ai", nhưng không được quyết định thay cho người chuyên môn về nội dung nghiệp vụ của họ.
+The Orchestrator may decide where work should go and who should receive it. It
+must not decide specialist domain substance on behalf of the responsible role.
 
 ---
 
 # 10. Source of Truth and Memory Model
 
-Framework phải phân biệt rõ giữa:
+The framework must distinguish between:
 
-- **conversation history**: context ngắn hạn, hỗ trợ suy luận;
-- **accepted documents**: memory dài hạn, source of truth.
+- **conversation history**: short-term context that supports reasoning;
+- **accepted documents**: long-term memory and source of truth.
 
 ```text
 Conversation history is context.
 Accepted documents are memory.
 ```
 
-Một quyết định quan trọng cuối cùng phải được lưu trong các tài liệu canonical như:
+Important final decisions should be stored in canonical documents such as:
 
-- accepted specification;
-- decision record;
-- architecture decision;
+- accepted specifications;
+- decision records;
+- architecture decisions;
 - project vision;
 - game pillars;
-- accepted research conclusion khi thích hợp.
+- accepted research conclusions when appropriate.
 
-Nếu handoff hoặc output mâu thuẫn với tài liệu đã được chấp nhận, tài liệu đã được chấp nhận phải được ưu tiên.
+If a Handoff or output conflicts with an accepted document, the accepted
+document has priority.
 
 ---
 
 # 11. Handoff and Escalation Rule
 
-Khi một task được chuyển từ Agent này sang Agent khác, thông tin phải được truyền theo dạng handoff có cấu trúc.
+When a task moves from one Agent to another, the transfer must use a structured
+Handoff.
 
-Handoff phải bảo toàn:
+A Handoff must preserve:
 
-- mục tiêu;
-- background và context;
+- objective;
+- background and context;
 - rationale;
 - accepted decisions;
-- constraint;
+- constraints;
 - assumptions;
 - unresolved questions;
 - expected output;
-- quyền hạn được phép và không được phép thay đổi.
+- what the receiving role may and may not change.
 
-Nếu task yêu cầu quyết định ngoài phạm vi quyền hạn của Agent nhận, Agent đó phải báo blocker hoặc escalation thay vì tự ý suy đoán quyết định.
+If a task requires a decision outside the receiving Agent's authority, that
+Agent must report a blocker or escalation instead of inventing the decision.
 
 ---
 
 # 12. Final Rule
 
-Quyền quyết định cuối cùng vẫn thuộc về Human Project Owner.
+Final decision-making authority remains with the Human Project Owner.
 
-Orchestrator không phải cấp cao hơn Project Owner, không phải cấp cao hơn các chuyên gia về domain, và không được dùng như "super-agent" vô hạn quyền lực.
+The Orchestrator is not above the Project Owner, is not above domain specialists,
+and must not be used as an unlimited "super-agent."
 
-Orchestrator đóng vai trò điều phối và bảo vệ thông tin, không phải thay thế tri thức chuyên môn hoặc quyết định cuối cùng của con người.
+The Orchestrator coordinates and protects information flow. It does not replace
+specialist knowledge or human final decision-making.
 
 ---
 
@@ -380,13 +390,14 @@ Development Orchestrator
         +-----------------------------+
         |                             |
         v                             v
-Research Agents               Design / Engineering / Quality
+Research Roles                Design / Engineering / Quality
         |                             |
         v                             v
 Evidence                       Domain-specific decisions
 ```
 
-Mô hình trên mô tả luồng điều phối và routing, không phải quyền lực domain tuyệt đối.
+This model describes coordination and routing flow. It is not absolute domain
+authority.
 
-Mỗi Agent chuyên môn vẫn giữ trách nhiệm và authority của mình trong phạm vi chuyên môn tương ứng.
-
+Each specialist role retains its own responsibility and authority within its
+accepted domain.

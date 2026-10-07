@@ -1,23 +1,6 @@
-# Quality Skill
+# Quality Skills
 
-**Status:** Active  
-**Version:** 0.1
+This directory is reserved for future reusable quality Skills.
 
-This skill helps review implementation and design against stated objectives and constraints.
-
-## Workflow
-
-1. define review criteria;
-2. inspect the work against requirements;
-3. identify gaps, risks, and edge cases;
-4. summarize findings;
-5. recommend fixes or clarifications.
-
-## Output
-
-A review should include:
-
-- verified findings;
-- issues or risks;
-- severity or impact;
-- suggested changes or follow-up questions.
+Reusable Skills in this category have not been formally designed or accepted
+yet. Do not treat this directory as defining an active canonical workflow.

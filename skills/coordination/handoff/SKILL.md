@@ -1,58 +1,98 @@
-# Coordination / Handoff Skill
+---
+name: agent-handoff
+description: Use when transferring work between Agents or roles so the receiving role gets the objective, rationale, constraints, authority boundaries, unresolved questions, and canonical source references without copying unnecessary context.
+---
 
-**Status:** Active  
-**Version:** 0.1
+# Agent Handoff
 
-Use this skill when work is transferred from one role to another without losing the task's objective, rationale, or constraints.
+Use this Skill when responsibility for work moves from one Agent or role to
+another.
 
-## Purpose
+The goal is to preserve necessary context, not maximum context. Prefer concise
+summaries plus canonical source references over copying full document contents
+or conversation history.
 
-A good handoff preserves:
+## Authority
 
+Canonical accepted documents outrank Handoff summaries. If a Handoff conflicts
+with an accepted canonical document, surface the conflict and follow the
+authority hierarchy instead of silently resolving it.
+
+Handoffs do not grant new domain authority. The receiving role may only make
+decisions within its accepted authority boundaries.
+
+## Handoff Content
+
+Include:
+
+- source role and reason for transfer;
+- target role and reason it is appropriate;
 - objective;
 - rationale;
-- accepted decisions;
-- constraints;
+- relevant accepted decisions;
+- constraints and non-goals;
 - assumptions;
-- unresolved questions;
-- progress;
+- unresolved questions or blockers;
+- progress already completed;
 - expected output;
-- authority boundaries.
+- acceptance or review expectations;
+- authority boundaries;
+- canonical source references.
 
-## Standard handoff checklist
+## Format
 
-```text
+Use a compact structured format when possible:
+
+```yaml
 from:
-  - role
-  - reason for handoff
+  role: <source-role>
+  reason: <why work is moving>
 
 to:
-  - target role
-  - why this role fits
+  role: <target-role>
+  reason: <why this role fits>
 
-objective:
-  - what must be achieved
+objective: <what must be achieved>
+
+rationale: <why this work matters>
 
 context:
-  - relevant accepted decisions
-  - relevant known constraints
-  - unresolved blockers
+  accepted_decisions:
+    - <decision or reference>
+  constraints:
+    - <constraint>
+  assumptions:
+    - <assumption>
+  unresolved_questions:
+    - <question or blocker>
 
 progress:
-  - completed
-  - in progress
-  - remaining
+  completed:
+    - <completed item>
+  remaining:
+    - <remaining item>
 
-expected output:
-  - deliverable
-  - acceptance criteria
+expected_output:
+  deliverable: <expected deliverable>
+  review_expectations:
+    - <acceptance or review expectation>
 
 authority:
-  - may modify
-  - may not modify
-  - requires approval
+  may_modify:
+    - <allowed area>
+  may_not_modify:
+    - <protected area>
+  requires_approval:
+    - <decision requiring approval>
+
+canonical_sources:
+  - <path or accepted document reference>
 ```
 
-## Rule
+## Rules
 
-Never silently reinterpret accepted decisions during a handoff.
+- Do not silently reinterpret accepted decisions.
+- Do not copy whole canonical documents unless the receiving role needs the
+  full content and no stable reference is sufficient.
+- Preserve known uncertainty as uncertainty.
+- Escalate when the receiving role would need a decision outside its authority.
